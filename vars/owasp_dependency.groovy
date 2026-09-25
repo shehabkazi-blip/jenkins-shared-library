@@ -1,4 +1,6 @@
 def call(){
-  dependencyCheck additionalArguments: '--scan ./ --nvdApiKey 365C631A-A0A2-4D3A-BB13-9BF29BE3F7A1', odcInstallation: 'OWASP'
+  withCredentials([string(credentialsId: 'NVD_API_KEY', variable: 'NVD_KEY')]) {
+    dependencyCheck additionalArguments: "--scan ./ --nvdApiKey ${NVD_KEY} --autoUpdate false", odcInstallation: 'OWASP'
+  }
   dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
 }
